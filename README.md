@@ -491,33 +491,38 @@ erDiagram
 
 Resulting Tables:
 
+
 PATIENT Table:
-```
-+------------+--------------+
-| Patient_ID | Patient_Name |
-+------------+--------------+
-```
+
+| Patient_ID (PK) | Patient_Name |
+|-----------------|--------------|
+| P001            | John Smith   |
+| P002            | Mary Johnson |
 
 DOCTOR Table:
-```
-+-----------+-------------+
-| Doctor_ID | Doctor_Name |
-+-----------+-------------+
-```
+
+| Doctor_ID (PK) | Doctor_Name   |
+|----------------|---------------|
+| D001           | Dr. Brown     |
+| D002           | Dr. Williams  |
 
 TREATMENT Table:
-```
-+----------------+-------------+
-| Treatment_Code | Description |
-+----------------+-------------+
-```
+
+| Treatment_Code (PK) | Description      |
+|---------------------|------------------|
+| T001                | X-ray            |
+| T002                | Blood Test       |
 
 PATIENT_TREATMENT Table:
-```
-+------------+-----------+----------------+------+------+---------+
-| Patient_ID | Doctor_ID | Treatment_Code | Date | Time | Results |
-+------------+-----------+----------------+------+------+---------+
-```
+
+| Patient_ID | Doctor_ID | Treatment_Code | Date       | Time     | Results           |
+|------------|-----------|----------------|------------|----------|-------------------|
+| P001       | D001      | T001           | 2023-09-15 | 10:30:00 | Normal            |
+| P002       | D002      | T002           | 2023-09-16 | 14:45:00 | Vitamin D deficient|
+| P001       | D002      | T002           | 2023-09-17 | 09:15:00 | Normal            |
+
+Note: In the PATIENT_TREATMENT table, (Doctor_ID, Date, Time) forms the composite primary key.
+
 
 In this ternary relationship:
 1. We create a table for each entity (PATIENT, DOCTOR, TREATMENT).
@@ -527,7 +532,7 @@ In this ternary relationship:
 
 This mapping approach for ternary relationships represents the fifth case where we use a composite primary key.
 
-## Composite Primary Key Cases (Corrected)
+## Composite Primary Key Cases
 
 We've now encountered five cases where composite primary keys are used:
 
@@ -539,4 +544,3 @@ We've now encountered five cases where composite primary keys are used:
 
 These five cases cover the main scenarios where composite primary keys are necessary in database design. They help maintain data integrity, avoid redundancy, and accurately represent complex relationships in the database schema.
 
-[Remainder of the content remains unchanged]
