@@ -544,3 +544,61 @@ We've now encountered five cases where composite primary keys are used:
 
 These five cases cover the main scenarios where composite primary keys are necessary in database design. They help maintain data integrity, avoid redundancy, and accurately represent complex relationships in the database schema.
 
+
+
+## 10. Considerations for Composite Primary Keys
+
+While composite primary keys can be useful in certain scenarios, it's generally recommended to:
+
+1. Avoid composite primary keys when possible for better performance and simplicity.
+2. If a composite primary key is necessary, limit it to two or three columns.
+3. Prefer numeric columns for composite primary keys to improve indexing efficiency.
+
+These considerations can impact database performance, especially when it comes to indexing, which we'll discuss in more detail later.
+
+## 11. Mapping Unary (Self-Referential) Relationships
+
+Unary relationships, also known as self-referential or recursive relationships, occur when an entity has a relationship with itself. A common example is employees being managed by other employees.
+
+### Example: Employee Self-Management
+
+ER Diagram:
+```mermaid
+erDiagram
+    EMPLOYEE ||--o{ EMPLOYEE : manages
+    EMPLOYEE {
+        int Employee_ID PK
+        string Name
+        int Age
+        int Manager_ID FK
+    }
+```
+
+Table Representation:
+
+| Employee_ID (PK) | Name  | Age | Manager_ID (FK) | IsMarriedTo |
+|------------------|-------|-----|-----------------|-------------|
+| 1                | Ahmed | 50  | NULL            | 2           |
+| 2                | Aya   | 30  | 1               | 1           |
+| 3                | Omar  | 29  | 1               | NULL        |
+| 4                | Doaa  | 22  | 2               | NULL        |
+
+In this example:
+- The EMPLOYEE table includes a Manager_ID column, which is a foreign key referencing the Employee_ID of the manager.
+- The Manager_ID can be NULL for employees who don't have a manager (e.g., the top-level manager).
+- We've also included an IsMarriedTo column to demonstrate another type of self-referential relationship.
+
+This approach allows for representing hierarchical relationships within a single table, which is efficient for queries involving employee-manager relationships.
+
+## Composite Primary Key Cases (Final Update)
+
+The main cases where composite primary keys are used include:
+
+1. Mapping multi-valued attributes
+2. Mapping complex attributes (composite and multi-valued)
+3. Mapping weak entities
+4. Mapping many-to-many relationships
+5. Mapping ternary relationships
+
+However, as noted earlier, it's generally advisable to use single-column primary keys where possible, especially for large tables or those frequently involved in joins.
+
