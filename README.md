@@ -340,6 +340,31 @@ classDiagram
     Course "1" -- "*" Student_Course : has
 ```
 
+#### Example: Students and Courses
+
+Student Table:
+
+| Student_ID (PK) | Student_Name |
+|-----------------|--------------|
+| S001            | Alice Johnson|
+| S002            | Bob Smith    |
+
+Course Table:
+
+| Course_ID (PK) | Course_Name |
+|----------------|-------------|
+| C001           | Mathematics |
+| C002           | History     |
+
+Student_Course Table:
+
+| Student_ID (FK) | Course_ID (FK) |
+|-----------------|----------------|
+| S001            | C001           |
+| S001            | C002           |
+| S002            | C001           |
+
+
 ### Many-to-Many Relationship with Attributes
 
 When a many-to-many relationship has its own attributes:
@@ -392,6 +417,31 @@ classDiagram
     RAW_MATERIALS "1" -- "*" QUOTE : supplies
     VENDOR "1" -- "*" QUOTE : provides
 ```
+
+
+RAW_MATERIALS Table:
+
+| Material_ID (PK) | Standard_Cost | Unit_of_Measure |
+|------------------|---------------|-----------------|
+| M001             | 10.50         | Kilograms       |
+| M002             | 5.25          | Liters          |
+
+VENDOR Table:
+
+| Vendor_ID (PK) | Vendor_Name | Vendor_Address |
+|----------------|-------------|----------------|
+| V001           | Acme Corp   | 123 Main St    |
+| V002           | XYZ Supplies| 456 Oak Ave    |
+
+QUOTE Table:
+
+| Material_ID (FK) | Vendor_ID (FK) | Unit_Price |
+|------------------|----------------|------------|
+| M001             | V001           | 11.00      |
+| M001             | V002           | 10.75      |
+| M002             | V001           | 5.50       |
+
+
 
 ## Composite Primary Key Cases (Updated)
 
