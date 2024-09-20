@@ -279,3 +279,134 @@ In the following sections, we'll explore:
 - Unary relationships
 
 We'll discuss their characteristics, mapping strategies, and provide examples for each case.
+
+
+
+
+# Entity, Attribute, and Relationship Mapping to Database Tables
+
+[Previous content remains unchanged]
+
+## 8. Mapping Many-to-Many Relationships
+
+Many-to-many relationships require special handling in relational databases. They are characterized by multiple entities on both sides of the relationship that can be associated with multiple entities on the other side.
+
+### Basic Many-to-Many Relationship
+
+For a basic many-to-many relationship:
+
+1. Create separate tables for each entity
+2. Create a junction table (also called association or linking table)
+3. The junction table contains foreign keys from both related entities
+4. The primary key of the junction table is a composite key of these foreign keys
+
+#### Example: Students and Courses
+
+```mermaid
+erDiagram
+    Student ||--o{ Student_Course : takes
+    Course ||--o{ Student_Course : has
+    Student {
+        int student_id PK
+        string student_name
+    }
+    Course {
+        int course_id PK
+        string course_name
+    }
+    Student_Course {
+        int student_id FK
+        int course_id FK
+    }
+```
+
+Table representation:
+
+```mermaid
+classDiagram
+    class Student {
+        +int student_id PK
+        string student_name
+    }
+    class Course {
+        +int course_id PK
+        string course_name
+    }
+    class Student_Course {
+        +int student_id FK
+        +int course_id FK
+    }
+    Student "1" -- "*" Student_Course : takes
+    Course "1" -- "*" Student_Course : has
+```
+
+### Many-to-Many Relationship with Attributes
+
+When a many-to-many relationship has its own attributes:
+
+1. Follow the same steps as the basic many-to-many relationship
+2. Add columns to the junction table for the relationship attributes
+
+#### Example: Raw Materials and Vendors
+
+```mermaid
+erDiagram
+    RAW_MATERIALS ||--o{ QUOTE : supplies
+    VENDOR ||--o{ QUOTE : provides
+    RAW_MATERIALS {
+        int Material_ID PK
+        float Standard_Cost
+        string Unit_of_Measure
+    }
+    VENDOR {
+        int Vendor_ID PK
+        string Vendor_Name
+        string Vendor_Address
+    }
+    QUOTE {
+        int Material_ID FK
+        int Vendor_ID FK
+        float Unit_Price
+    }
+```
+
+Table representation:
+
+```mermaid
+classDiagram
+    class RAW_MATERIALS {
+        +int Material_ID PK
+        float Standard_Cost
+        string Unit_of_Measure
+    }
+    class VENDOR {
+        +int Vendor_ID PK
+        string Vendor_Name
+        string Vendor_Address
+    }
+    class QUOTE {
+        +int Material_ID FK
+        +int Vendor_ID FK
+        float Unit_Price
+    }
+    RAW_MATERIALS "1" -- "*" QUOTE : supplies
+    VENDOR "1" -- "*" QUOTE : provides
+```
+
+## Composite Primary Key Cases (Updated)
+
+We've now encountered five cases where composite primary keys are used:
+
+1. Mapping multi-valued attributes
+2. Mapping complex attributes that are both composite and multi-valued
+3. Mapping weak entities
+4. Mapping basic many-to-many relationships
+5. Mapping many-to-many relationships with attributes
+
+These cases cover the majority of scenarios where composite primary keys are necessary in database design. They help maintain data integrity, avoid redundancy, and accurately represent complex relationships in the database schema.
+
+## Conclusion
+
+Understanding these mapping techniques, especially for many-to-many relationships and the use of composite primary keys, is crucial for effective database design. These approaches ensure that we can represent complex real-world relationships in our relational database structures while maintaining data integrity and efficiency.
+
+Remember, while we've covered five main cases for composite primary keys, there are seven total cases for mapping binary relationships in database design. The many-to-many scenario, with or without attributes, represents one of these important cases.
