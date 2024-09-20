@@ -443,20 +443,100 @@ QUOTE Table:
 
 
 
-## Composite Primary Key Cases (Updated)
 
-We've now encountered five cases where composite primary keys are used:
-
-1. Mapping multi-valued attributes
-2. Mapping complex attributes that are both composite and multi-valued
-3. Mapping weak entities
-4. Mapping basic many-to-many relationships
-5. Mapping many-to-many relationships with attributes
-
-These cases cover the majority of scenarios where composite primary keys are necessary in database design. They help maintain data integrity, avoid redundancy, and accurately represent complex relationships in the database schema.
 
 ## Conclusion
 
 Understanding these mapping techniques, especially for many-to-many relationships and the use of composite primary keys, is crucial for effective database design. These approaches ensure that we can represent complex real-world relationships in our relational database structures while maintaining data integrity and efficiency.
 
 Remember, while we've covered five main cases for composite primary keys, there are seven total cases for mapping binary relationships in database design. The many-to-many scenario, with or without attributes, represents one of these important cases.
+
+
+
+## 9. Mapping Ternary Relationships
+
+Ternary relationships involve three entities and have only one scenario for mapping, regardless of cardinality or participation constraints.
+
+### Example: Patient, Doctor, and Treatment
+
+Based on the provided ER diagram and resulting tables:
+
+ER Diagram (simplified representation):
+```mermaid
+erDiagram
+    PATIENT ||--o{ TREAT : participates
+    DOCTOR ||--o{ TREAT : performs
+    TREATMENT ||--o{ TREAT : involves
+    PATIENT {
+        string Patient_ID PK
+        string Patient_Name
+    }
+    DOCTOR {
+        string Doctor_ID PK
+        string Doctor_Name
+    }
+    TREATMENT {
+        string Treatment_Code PK
+        string Description
+    }
+    TREAT {
+        string Patient_ID FK
+        string Doctor_ID FK
+        string Treatment_Code FK
+        date Date
+        time Time
+        string Results
+    }
+```
+
+Resulting Tables:
+
+PATIENT Table:
+```
++------------+--------------+
+| Patient_ID | Patient_Name |
++------------+--------------+
+```
+
+DOCTOR Table:
+```
++-----------+-------------+
+| Doctor_ID | Doctor_Name |
++-----------+-------------+
+```
+
+TREATMENT Table:
+```
++----------------+-------------+
+| Treatment_Code | Description |
++----------------+-------------+
+```
+
+PATIENT_TREATMENT Table:
+```
++------------+-----------+----------------+------+------+---------+
+| Patient_ID | Doctor_ID | Treatment_Code | Date | Time | Results |
++------------+-----------+----------------+------+------+---------+
+```
+
+In this ternary relationship:
+1. We create a table for each entity (PATIENT, DOCTOR, TREATMENT).
+2. We create a fourth table (PATIENT_TREATMENT) to represent the ternary relationship.
+3. The PATIENT_TREATMENT table includes foreign keys from all three entity tables.
+4. The composite primary key for PATIENT_TREATMENT is chosen to ensure uniqueness. In this case, (Doctor_ID, Date, Time) forms the composite primary key.
+
+This mapping approach for ternary relationships represents the fifth case where we use a composite primary key.
+
+## Composite Primary Key Cases (Corrected)
+
+We've now encountered five cases where composite primary keys are used:
+
+1. Mapping multi-valued attributes
+2. Mapping complex attributes that are both composite and multi-valued
+3. Mapping weak entities
+4. Mapping many-to-many relationships (with or without attributes)
+5. Mapping ternary relationships
+
+These five cases cover the main scenarios where composite primary keys are necessary in database design. They help maintain data integrity, avoid redundancy, and accurately represent complex relationships in the database schema.
+
+[Remainder of the content remains unchanged]
