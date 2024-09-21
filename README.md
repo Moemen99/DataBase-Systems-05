@@ -602,3 +602,119 @@ The main cases where composite primary keys are used include:
 
 However, as noted earlier, it's generally advisable to use single-column primary keys where possible, especially for large tables or those frequently involved in joins.
 
+
+
+# Entity, Attribute, and Relationship Mapping to Database Tables
+
+
+## 12. Mapping Rules Summary
+
+When mapping an ER diagram to a relational database schema, there are 8 essential rules or steps to follow. These rules ensure a good database design that accurately represents the relationships and attributes of the entities. Let's start with the first two rules:
+
+### Rule 1: One-to-One Relationship (Total Participation on Both Sides)
+
+When dealing with a one-to-one relationship where both entities have total participation:
+
+1. Combine the two entities into a single table.
+2. Choose one of the two entity's keys to be the primary key for the combined table.
+
+Example:
+
+ER Diagram:
+```mermaid
+erDiagram
+    PERSON ||--|| PASSPORT : has
+    PERSON {
+        int PersonID PK
+        string Name
+    }
+    PASSPORT {
+        int PassportNumber PK
+        date ExpiryDate
+    }
+```
+
+Resulting Table:
+
+| PersonID (PK) | Name | PassportNumber | ExpiryDate |
+|---------------|------|----------------|------------|
+| 1             | John | A12345         | 2025-12-31 |
+| 2             | Jane | B67890         | 2024-06-30 |
+
+### Rule 2: Mapping Regular (Strong) Entities
+
+When mapping a regular (strong) entity:
+
+1. Create a table for the entity.
+2. Map attributes based on their type:
+   a. Simple attributes: Place as-is in the table.
+   b. Multi-valued attributes: Create a separate table.
+   c. Composite attributes: Map individual components.
+   d. Complex attributes: Create a separate table.
+
+#### 2a. Simple Attributes
+
+Map directly to columns in the entity's table.
+
+Example:
+
+| EmployeeID (PK) | Name  | Age |
+|-----------------|-------|-----|
+| 1               | Alice | 30  |
+| 2               | Bob   | 35  |
+
+#### 2b. Multi-valued Attributes
+
+Create a separate table with a foreign key referencing the main entity's primary key. The primary key of this new table is a composite of the foreign key and the multi-valued attribute.
+
+Example: Employee Skills
+
+Main Table (EMPLOYEE):
+
+| EmployeeID (PK) | Name  |
+|-----------------|-------|
+| 1               | Alice |
+| 2               | Bob   |
+
+Separate Table (EMPLOYEE_SKILLS):
+
+| EmployeeID (FK) | Skill (PK) |
+|-----------------|------------|
+| 1               | Java       |
+| 1               | Python     |
+| 2               | C++        |
+
+#### 2c. Composite Attributes
+
+Map the individual components of the composite attribute to separate columns in the main entity's table.
+
+Example:
+
+| EmployeeID (PK) | FirstName | LastName | StreetAddress | City  | ZipCode |
+|-----------------|-----------|----------|---------------|-------|---------|
+| 1               | Alice     | Johnson  | 123 Main St   | NYC   | 10001   |
+| 2               | Bob       | Smith    | 456 Elm St    | LA    | 90001   |
+
+#### 2d. Complex Attributes
+
+Create a separate table for the complex attribute. Include the main entity's primary key as a foreign key in this new table. The primary key of the new table is a composite of the foreign key and one of the complex attribute's components.
+
+Example: Employee Contact Information
+
+Main Table (EMPLOYEE):
+
+| EmployeeID (PK) | Name  |
+|-----------------|-------|
+| 1               | Alice |
+| 2               | Bob   |
+
+Separate Table (EMPLOYEE_CONTACT):
+
+| EmployeeID (FK) | ContactType | ContactValue | IsPrimary |
+|-----------------|-------------|--------------|-----------|
+| 1               | Email       | alice@ex.com | Yes       |
+| 1               | Phone       | 1234567890   | No        |
+| 2               | Email       | bob@ex.com   | Yes       |
+
+In this case, (EmployeeID, ContactType) could form the composite primary key.
+
