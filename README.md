@@ -826,3 +826,149 @@ EMPLOYEE_PARKING Table:
 | 2                   | P2           |
 
 [To be continued with the remaining rules]
+
+
+
+
+## 12. Mapping Rules Summary (Completed)
+
+### Rule 4: Mapping Binary Relationships (Continued)
+
+#### 4c. One-to-Many Relationships
+
+1. One-to-Many (Many side mandatory):
+   - Create a table for each entity
+   - Add the primary key of the "one" side as a foreign key in the "many" side table
+
+Example: Department and Employees
+
+DEPARTMENT Table:
+| DeptID (PK) | DeptName |
+|-------------|----------|
+| D1          | HR       |
+| D2          | IT       |
+
+EMPLOYEE Table:
+| EmpID (PK) | EmpName | DeptID (FK) |
+|------------|---------|-------------|
+| E1         | Alice   | D1          |
+| E2         | Bob     | D2          |
+| E3         | Charlie | D1          |
+
+2. One-to-Many (Many side optional):
+   - Create a table for each entity
+   - Create a third table for the relationship
+   - In the relationship table, include:
+     * The primary key of the "many" side as both a foreign key and part of the primary key
+     * The primary key of the "one" side as a foreign key
+
+Example: Courses and Students (where students may not be enrolled in any course)
+
+COURSE Table:
+| CourseID (PK) | CourseName |
+|---------------|------------|
+| C1            | Math       |
+| C2            | History    |
+
+STUDENT Table:
+| StudentID (PK) | StudentName |
+|----------------|-------------|
+| S1             | Alice       |
+| S2             | Bob         |
+
+ENROLLMENT Table:
+| StudentID (FK, PK) | CourseID (FK) |
+|--------------------|---------------|
+| S1                 | C1            |
+| S1                 | C2            |
+| S2                 | C1            |
+
+#### 4d. Many-to-Many Relationships
+
+For many-to-many relationships:
+- Create a table for each entity
+- Create a third table to represent the relationship
+- In the relationship table, include the primary keys of both entities as foreign keys
+- The primary key of the relationship table is a composite of these two foreign keys
+
+This is the fourth scenario where we use a composite primary key.
+
+Example: Students and Courses
+
+STUDENT Table:
+| StudentID (PK) | StudentName |
+|----------------|-------------|
+| S1             | Alice       |
+| S2             | Bob         |
+
+COURSE Table:
+| CourseID (PK) | CourseName |
+|---------------|------------|
+| C1            | Math       |
+| C2            | History    |
+
+STUDENT_COURSE Table:
+| StudentID (FK, PK) | CourseID (FK, PK) |
+|--------------------|-------------------|
+| S1                 | C1                |
+| S1                 | C2                |
+| S2                 | C1                |
+
+### Rule 5: Mapping Ternary Relationships
+
+For ternary relationships:
+1. Create a table for each entity
+2. Create a fourth table to represent the relationship
+3. In the relationship table:
+   - Include the primary keys of all three entities as foreign keys
+   - Any attributes of the relationship are added as columns
+   - Create a composite primary key from a combination of these foreign keys
+
+This is the fifth scenario where we use a composite primary key.
+
+Example: Supplier, Part, Project
+
+SUPPLIER Table:
+| SupplierID (PK) | SupplierName |
+|-----------------|--------------|
+| S1              | Acme Co.     |
+| S2              | XYZ Inc.     |
+
+PART Table:
+| PartID (PK) | PartName |
+|-------------|----------|
+| P1          | Bolt     |
+| P2          | Nut      |
+
+PROJECT Table:
+| ProjectID (PK) | ProjectName |
+|----------------|-------------|
+| PR1            | Bridge      |
+| PR2            | Tower       |
+
+SUPPLY Table:
+| SupplierID (FK, PK) | PartID (FK, PK) | ProjectID (FK, PK) | Quantity |
+|---------------------|-----------------|---------------------|----------|
+| S1                  | P1              | PR1                 | 1000     |
+| S1                  | P2              | PR1                 | 500      |
+| S2                  | P1              | PR2                 | 750      |
+
+### Rule 6: Mapping Unary (Self-Referential) Relationships
+
+For unary relationships:
+1. Create a single table for the entity
+2. Add an extra column as a foreign key that references the primary key of the same table
+
+Example: Employee Hierarchy
+
+EMPLOYEE Table:
+| EmpID (PK) | EmpName | ManagerID (FK) |
+|------------|---------|----------------|
+| E1         | Alice   | NULL           |
+| E2         | Bob     | E1             |
+| E3         | Charlie | E1             |
+| E4         | David   | E2             |
+
+In this example, the ManagerID is a foreign key referencing the EmpID of the same table, representing the hierarchical relationship between employees.
+
+This completes the summary of mapping rules, covering all major types of relationships and entities in database design.
