@@ -718,3 +718,111 @@ Separate Table (EMPLOYEE_CONTACT):
 
 In this case, (EmployeeID, ContactType) could form the composite primary key.
 
+
+[To be continued with the remaining rules]
+
+
+
+## 12. Mapping Rules Summary (Continued)
+
+### Rule 2: Mapping Regular (Strong) Entities (Additional Notes)
+
+#### 2d. Complex Attributes (Continued)
+
+For complex attributes that are both composite and multi-valued:
+- Create a separate table
+- Include the main entity's primary key as a foreign key
+- Map the components of the complex attribute
+- Create a composite primary key using the foreign key and one of the components
+
+Note: Derived attributes are typically not mapped to the database schema as they are calculated values.
+
+### Rule 3: Mapping Weak Entities
+
+When mapping a weak entity:
+
+1. Create a table for the weak entity
+2. Include all attributes of the weak entity
+3. Add the primary key of the strong (owner) entity as a foreign key
+4. Create a composite primary key consisting of:
+   a. The foreign key from the strong entity
+   b. The partial key of the weak entity
+
+This is the third scenario where we use a composite primary key.
+
+Example: Employee Dependents
+
+Strong Entity Table (EMPLOYEE):
+
+| EmployeeID (PK) | Name  |
+|-----------------|-------|
+| 1               | Alice |
+| 2               | Bob   |
+
+Weak Entity Table (DEPENDENT):
+
+| EmployeeID (FK) | DependentName | Relationship | Birth Date |
+|-----------------|---------------|--------------|------------|
+| 1               | John          | Son          | 2010-05-15 |
+| 1               | Sarah         | Daughter     | 2012-08-20 |
+| 2               | Mary          | Wife         | 1985-03-10 |
+
+In this case, (EmployeeID, DependentName) forms the composite primary key for the DEPENDENT table.
+
+### Rule 4: Mapping One-to-One Relationships
+
+#### 4a. One-to-One (Total on one side, Partial on the other)
+
+1. Create a table for each entity
+2. In the table for the total participation entity, include the primary key of the partial participation entity as a foreign key
+
+Example: Employee and Office
+
+EMPLOYEE Table:
+
+| EmployeeID (PK) | Name  | OfficeID (FK) |
+|-----------------|-------|---------------|
+| 1               | Alice | 101           |
+| 2               | Bob   | 102           |
+| 3               | Carol | NULL          |
+
+OFFICE Table:
+
+| OfficeID (PK) | Location |
+|---------------|----------|
+| 101           | Floor 1  |
+| 102           | Floor 2  |
+
+#### 4b. One-to-One (Partial on both sides)
+
+1. Create a table for each entity
+2. Create a third table to represent the relationship
+3. In the relationship table, include the primary keys of both entities as foreign keys
+4. Choose one of the foreign keys to be the primary key of the relationship table
+
+Example: Employee and Parking Space
+
+EMPLOYEE Table:
+
+| EmployeeID (PK) | Name  |
+|-----------------|-------|
+| 1               | Alice |
+| 2               | Bob   |
+| 3               | Carol |
+
+PARKING_SPACE Table:
+
+| SpaceID (PK) | Location |
+|--------------|----------|
+| P1           | Lot A    |
+| P2           | Lot B    |
+| P3           | Lot C    |
+
+EMPLOYEE_PARKING Table:
+
+| EmployeeID (FK, PK) | SpaceID (FK) |
+|---------------------|--------------|
+| 1                   | P1           |
+| 2                   | P2           |
+
+[To be continued with the remaining rules]
